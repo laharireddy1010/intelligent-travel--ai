@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080d19">
+  <title>Wayfinder AI | Intelligent Travel Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <aside class="sidebar">
+    <a class="brand" href="#overview"><span class="brand-icon">W</span><span>wayfinder<span class="brand-ai">.ai</span></span></a>
+    <div class="side-label">WORKSPACE</div>
+    <nav class="side-nav">
+      <a class="nav-link active" href="#overview"><span>◈</span> Overview</a>
+      <a class="nav-link" href="#planner"><span>⌁</span> Route planner</a>
+      <a class="nav-link" href="#algorithms"><span>⟡</span> AI algorithms</a>
+      <a class="nav-link" href="#documentation"><span>▤</span> Project notes</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="network-status"><i></i><span>Sample network online</span></div>
+      <div class="profile"><div class="avatar">AI</div><div><strong>Travel intelligence</strong><small>Local demo mode</small></div></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="breadcrumb">Workspace <span>/</span> <b>Travel dashboard</b></div>
+      <div class="top-actions"><span class="date-pill">INDIA · ROAD NETWORK</span><button class="icon-button" aria-label="Notifications">⌁</button></div>
+    </header>
+    <section class="page-section hero" id="overview">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="pulse"></span> INTELLIGENT ROUTE DISCOVERY</div>
+        <h1>Every journey,<br>thoughtfully <span>solved.</span></h1>
+        <p>Plan smarter road trips across South India. Explore how A* and AO* turn a network of roads into your best next move.</p>
+        <a class="primary-button" href="#planner">Plan a journey <span>↗</span></a>
+      </div>
+      <div class="hero-art" aria-label="Illustration of connected travel destinations">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <svg viewBox="0 0 360 260" role="img" aria-label="Route network connecting cities">
+          <path class="route-line muted-line" d="M66 190 L130 142 L200 164 L282 98 L314 52"/>
+          <path class="route-line active-line" d="M66 190 L130 142 L200 164 L282 98"/>
+          <path class="route-line alternate-line" d="M130 142 L165 74 L282 98"/>
+          <circle class="map-node" cx="66" cy="190" r="7"/><circle class="map-node" cx="130" cy="142" r="7"/>
+          <circle class="map-node active-node" cx="200" cy="164" r="8"/><circle class="map-node" cx="282" cy="98" r="7"/>
+          <circle class="map-node" cx="165" cy="74" r="6"/><circle class="map-node" cx="314" cy="52" r="6"/>
+          <text x="35" y="218">MYSURU</text><text x="106" y="127">BENGALURU</text><text x="177" y="190">TIRUPATI</text>
+          <text x="267" y="82">CHENNAI</text><text x="140" y="59">HYDERABAD</text>
+        </svg>
+        <div class="floating-chip"><span>✦</span> Route optimized <b>+18%</b></div>
+      </div>
+    </section>
+
+    <section class="stats-grid" aria-label="Network statistics">
+      <article class="stat-card"><div class="stat-icon blue">⌖</div><div><span>Connected cities</span><strong>10 <small>cities</small></strong></div><div class="stat-foot">South India network</div></article>
+      <article class="stat-card"><div class="stat-icon violet">↗</div><div><span>Road connections</span><strong>27 <small>routes</small></strong></div><div class="stat-foot">Sample distances included</div></article>
+      <article class="stat-card"><div class="stat-icon cyan">✧</div><div><span>Search strategies</span><strong>02 <small>algorithms</small></strong></div><div class="stat-foot">A* heuristic + AO* graph</div></article>
+      <article class="stat-card highlight-stat"><div class="stat-icon green">◉</div><div><span>Planner status</span><strong>Ready <small>to explore</small></strong></div><div class="stat-foot"><i class="tiny-dot"></i> Runs fully offline</div></article>
+    </section>
+
+    <section class="page-section planner-section" id="planner">
+      <div class="section-heading">
+        <div><div class="eyebrow">YOUR NEXT ADVENTURE</div><h2>Build your route</h2><p>Choose your cities and let the search algorithms do the thinking.</p></div>
+        <div class="mode-badge"><span>✦</span> AI route engine</div>
+      </div>
+      <div class="planner-grid">
+        <form class="planner-panel" id="planner-form">
+          <div class="panel-top"><div><strong>Journey details</strong><span>All distances and costs are sample estimates</span></div><span class="step-number">01 / 02</span></div>
+          <div class="field-row">
+            <label class="field">Starting city
+              <span class="select-wrap"><span class="field-pin">●</span><select id="start" required>{% for city in cities %}<option value="{{ city }}" {% if city == 'Madanapalle' %}selected{% endif %}>{{ city }}</option>{% endfor %}</select></span>
+            </label>
+            <button class="swap-button" type="button" id="swap-cities" title="Swap cities">⇄</button>
+            <label class="field">Destination
+              <span class="select-wrap"><span class="field-pin destination-pin">◆</span><select id="destination" required>{% for city in cities %}<option value="{{ city }}" {% if city == 'Kochi' %}selected{% endif %}>{{ city }}</option>{% endfor %}</select></span>
+            </label>
+          </div>
+          <label class="field waypoints-label">Stops along the way <span class="optional">OPTIONAL · UP TO 3</span>
+            <div class="waypoint-control"><select id="waypoint-select"><option value="">Add an optional stop...</option>{% for city in cities %}<option value="{{ city }}">{{ city }}</option>{% endfor %}</select><button type="button" class="add-stop" id="add-stop">＋ Add stop</button></div>
+            <div class="waypoint-list" id="waypoint-list"></div>
+          </label>
+          <div class="field preference-field"><span class="field-title">Optimize my journey for</span>
+            <div class="preference-options">
+              <label class="preference-option selected"><input type="radio" name="preference" value="distance" checked><span class="preference-icon">↔</span><span><b>Shortest</b><small>Distance</small></span></label>
+              <label class="preference-option"><input type="radio" name="preference" value="cost"><span class="preference-icon">₹</span><span><b>Lowest</b><small>Cost</small></span></label>
+              <label class="preference-option"><input type="radio" name="preference" value="time"><span class="preference-icon">◷</span><span><b>Fastest</b><small>Journey</small></span></label>
+            </div>
+          </div>
+          <div class="form-actions"><button type="submit" class="primary-button plan-button" id="plan-button">Find my best route <span>✦</span></button><button type="button" class="reset-button" id="reset-button">Reset</button></div>
+          <p class="form-error" id="form-error" role="alert"></p>
+        </form>
+        <aside class="insight-panel">
+          <div class="insight-top"><div class="insight-icon">✧</div><span>HOW IT WORKS</span></div>
+          <h3>Two minds.<br>One better journey.</h3>
+          <div class="insight-item"><span class="algorithm-mark astar-mark">A*</span><div><b>A* search</b><p>Finds an optimal path using cost-so-far + a distance heuristic.</p></div></div>
+          <div class="insight-item"><span class="algorithm-mark aostar-mark">AO*</span><div><b>AO* search</b><p>Evaluates choices and required journey segments in an AND-OR graph.</p></div></div>
+          <div class="insight-note">Sample road network · No API key needed</div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="results-section hidden" id="results">
+      <div class="section-heading results-heading"><div><div class="eyebrow">ROUTE INTELLIGENCE</div><h2>Your route analysis</h2><p id="result-subtitle">A* recommendation and AO* evaluation</p></div><button class="compare-button" id="compare-button">⇄ Compare routes</button></div>
+      <div class="results-grid">
+        <article class="route-card recommended-card"><div class="result-card-head"><span class="recommend-label"><i></i> A* RECOMMENDED ROUTE</span><span class="route-tag" id="route-tag">SHORTEST</span></div>
+          <div class="route-visual" id="route-visual"></div><div class="route-cities" id="route-cities"></div>
+          <div class="metric-row" id="main-metrics"></div><button class="text-button" id="steps-toggle">View A* search steps <span>⌄</span></button>
+          <div class="steps-list hidden" id="astar-steps"></div>
+        </article>
+        <article class="route-card ao-card"><div class="result-card-head"><span class="recommend-label ao-label"><i></i> AO* GRAPH SOLUTION</span><span class="route-tag purple-tag">AND / OR</span></div>
+          <div class="ao-summary"><div class="ao-graph-mini" id="ao-graph-mini"></div><div><span>Selected solution</span><b id="ao-path"></b></div></div>
+          <div class="metric-row" id="ao-metrics"></div><button class="text-button" id="ao-steps-toggle">View AO* decisions <span>⌄</span></button>
+          <div class="steps-list hidden" id="ao-steps"></div>
+        </article>
+      </div>
+      <div class="compare-panel hidden" id="compare-panel"><div class="compare-title"><div><span class="eyebrow">ROUTE ALTERNATIVES</span><h3>Compare your options</h3></div><span class="estimate-note">All figures are illustrative estimates</span></div><div class="alternatives-grid" id="alternatives-grid"></div></div>
+      <div class="exploration-panel"><div><div class="eyebrow">A* SEARCH TRACE</div><h3>Nodes explored</h3><p>Each node is expanded in increasing estimated total cost, f(n) = g(n) + h(n).</p></div><div class="explored-nodes" id="explored-nodes"></div></div>
+    </section>
+
+    <section class="page-section algorithm-section" id="algorithms">
+      <div class="section-heading"><div><div class="eyebrow">BEHIND THE ROUTE</div><h2>Meet the algorithms</h2><p>Two classic AI search strategies, each with a different way to reason.</p></div></div>
+      <div class="algorithm-grid">
+        <article class="algorithm-card"><div class="algo-card-head"><span class="algo-symbol blue-symbol">A*</span><span class="algo-type">INFORMED SEARCH</span></div><h3>A* Search</h3><p>Ranks each candidate city by the cost already traveled plus an admissible estimate to the goal. The lowest f-score gets explored first.</p><div class="formula">f(n) = <span>g(n)</span> + <b>h(n)</b></div><div class="formula-legend"><span>Actual path cost</span><span>Estimated remaining cost</span></div><ul><li>Optimal for non-negative edge costs</li><li>Supports distance, cost and time objectives</li><li>Tracks explored nodes and route steps</li></ul></article>
+        <article class="algorithm-card"><div class="algo-card-head"><span class="algo-symbol purple-symbol">AO*</span><span class="algo-type">AND-OR SEARCH</span></div><h3>AO* Search</h3><p>Solves a problem-reduction graph: an AND node needs every child; an OR node selects its least-cost child. Costs back up to find the best solution graph.</p><div class="formula ao-formula">AND: <span>Σ child costs</span><b> · </b>OR: <span>min(child costs)</span></div><div class="formula-legend"><span>Every required segment</span><span>Best alternative</span></div><ul><li>Handles dependent travel legs</li><li>Compares alternate road plans per leg</li><li>Shows selected decisions and explanations</li></ul></article>
+      </div>
+      <div class="comparison-table-wrap"><table class="comparison-table"><thead><tr><th>Property</th><th><span class="table-a-star">A*</span></th><th><span class="table-ao-star">AO*</span></th></tr></thead><tbody>
+        <tr><td>Working principle</td><td>Ranks states by g(n) + h(n)</td><td>Expands AND-OR graph; backs up costs</td></tr>
+        <tr><td>Heuristic</td><td>Admissible straight-line lower bound</td><td>Estimated solution cost on partial graphs</td></tr>
+        <tr><td>Search strategy</td><td>Best-first over route states</td><td>Best partial solution graph</td></tr>
+        <tr><td>Best suited to</td><td>Optimal paths in weighted road graphs</td><td>Problems decomposed into choices and subgoals</td></tr>
+        <tr><td>Key advantage</td><td>Efficient optimal path finding</td><td>Models choices plus jointly required tasks</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section class="page-section docs-section" id="documentation">
+      <div class="section-heading"><div><div class="eyebrow">PROJECT DOCUMENTATION</div><h2>Project notes</h2><p>A concise guide to the problem, design, methodology and next steps.</p></div></div>
+      <div class="docs-grid">
+        <details class="doc-card" open><summary>Abstract &amp; introduction <span>＋</span></summary><p>This Intelligent Travel Planner models South Indian cities as a weighted road graph and applies informed AI search to find practical trips. A* recommends optimal paths for distance, estimated cost or journey time; AO* evaluates dependent journey legs and route alternatives through an AND-OR graph. It runs locally on predefined sample data without paid services or API keys.</p></details>
+        <details class="doc-card"><summary>Problem statement &amp; objectives <span>＋</span></summary><p>Choosing a road route among many connected cities is a weighted search problem. The objectives are to model a road network, implement A* and AO* in Python, compare routes against travel preferences, and make each algorithm's decisions observable.</p></details>
+        <details class="doc-card"><summary>Existing &amp; proposed system <span>＋</span></summary><p>Manual planning or basic map lookups can obscure trade-offs and provide little insight into search decisions. The proposed local web app combines a configurable graph, real search algorithms, route estimates, alternatives, and an interactive visual trace.</p></details>
+        <details class="doc-card"><summary>System architecture &amp; methodology <span>＋</span></summary><p>Browser UI (HTML/CSS/JavaScript) → Flask JSON API → Python graph and search module → predefined road data. The planner validates inputs, runs A* and AO*, then returns paths, metrics and explanation steps for SVG visualization.</p></details>
+        <details class="doc-card"><summary>A* algorithm <span>＋</span></summary><p>Initialize a priority queue with the start state; repeatedly expand the lowest f(n)=g(n)+h(n); relax each valid road edge; advance ordered waypoint progress; stop at the goal and reconstruct predecessors. The straight-line estimate is scaled conservatively for each objective.</p></details>
+        <details class="doc-card"><summary>AO* algorithm <span>＋</span></summary><p>Represent the complete trip as an AND node over required legs, each leg as an OR node over candidate routes, and each route as an AND node over its road segments. Sum costs at AND nodes, choose the minimum-cost child at OR nodes, and back up the selected solution and explanation.</p></details>
+        <details class="doc-card"><summary>Applications &amp; advantages <span>＋</span></summary><p>Applications include road-trip planning, logistics, navigation education and decomposable planning problems. The approach is transparent, configurable, locally runnable, multi-objective and demonstrates two foundational AI search methods.</p></details>
+        <details class="doc-card"><summary>Future scope &amp; conclusion <span>＋</span></summary><p>Future work could add live traffic, public transit, richer geographic maps, time windows, user-defined networks and persistent trip plans. This project demonstrates how heuristic search and AND-OR decomposition can support explainable travel decisions using an immediately available sample network.</p></details>
+      </div>
+      <div class="source-note"><span>ⓘ</span> Road distances, average speeds and per-kilometer costs are illustrative sample data—not live traffic, fare quotes or navigation guidance.</div>
+    </section>
+    <footer><span>WAYFINDER AI <i>·</i> INTELLIGENT TRAVEL PLANNER</span><span>Built with A* and AO* search <b>✦</b></span></footer>
+  </main>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
